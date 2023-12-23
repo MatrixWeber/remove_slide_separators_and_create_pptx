@@ -22,11 +22,12 @@ fn main() -> std::io::Result<()> {
     {
         let separators = vec!["-s-", "-v-", "[<](#/)"];
         let file_content_after_replacement = remove_separators(file_content, separators);
-        println!("{}", file_content_after_replacement);
+        // println!("{}", file_content_after_replacement);
 
         create_new_md_file_for_pptx("rust_training_for_pptx.md", file_content_after_replacement)?;
 
         execute_a_bash_command("pandoc --from markdown --to pptx ".to_owned() + "rust_training_for_pptx.md" + " -o rust_training.pptx")?;
+        println!("rust_training.pptx file was created")
     }
 
     Ok(())
@@ -41,6 +42,12 @@ fn execute_a_bash_command(command: String) -> Result<(), Error> {
     if !output.stdout.is_empty()
     {
         let output = String::from_utf8_lossy(&output.stdout);
+        println!("Output: {}", output);
+    }
+
+    if !output.stderr.is_empty()
+    {
+        let output = String::from_utf8_lossy(&output.stderr);
         println!("Output: {}", output);
     }
     Ok(())
